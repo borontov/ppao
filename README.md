@@ -143,6 +143,7 @@ for execution_unit in solution:
 
 - [ ] Add debug logging
 - [ ] Deduplicate equal shift combinations like (-1, -1, 0, 0) & (0, 0, 1, 1)
+- [ ] PyPI-friendly README
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 

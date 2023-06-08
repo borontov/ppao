@@ -1,0 +1,108 @@
+[tool.poetry]
+name = "ppao"
+version = "1.0"
+description = "Reduce repeated data handler calls by the operations grouping."
+authors = ["Alex Borontov <anborontov@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+# These packages are mandatory and form the core of this package’s distribution.
+python = "^3.10"
+numpy = "1.24.3"
+
+[tool.poetry.group.dev.dependencies]
+# Dev dependencies.
+pytest = "7.3.1"
+hypothesis = "6.76.0"
+bandit = "1.7.5"
+pytype = "2023.05.24"
+black = "23.3.0"
+ruff = "0.0.271"
+isort = "5.12.0"
+
+[tool.conda-lock]
+channels = [
+    'conda-forge', 'defaults'
+]
+platforms = [
+    'linux-64', 'osx-64'
+]
+
+[tool.black]
+line-length = 79
+
+[tool.ruff]
+line-length = 79
+# Enable flake8-bugbear (`B`) rules.
+select = ["E", "F", "B"]
+
+[tool.ruff.per-file-ignores]
+"ppao/__init__.py" = ["F401"]
+
+[tool.ruff.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+
+[tool.pytype]
+# Space-separated list of files or directories to exclude.
+exclude = [
+    '**/*_test.py',
+    '**/test_*.py',
+]
+# Space-separated list of files or directories to process.
+inputs = [
+    '.',
+]
+# Keep going past errors to analyze as many files as possible.
+keep_going = false
+# Run N jobs in parallel. When 'auto' is used, this will be equivalent to the
+# number of CPUs on the host system.
+jobs = 4
+# All pytype output goes here.
+output = '.pytype'
+# Platform (e.g., "linux", "win32") that the target code runs on.
+platform = 'linux'
+# Paths to source code directories, separated by ':'.
+pythonpath = '.'
+# Python version (major.minor) of the target code.
+python_version = '3.10'
+# Enable parameter count checks for overriding methods. This flag is temporary
+# and will be removed once this behavior is enabled by default.
+overriding_parameter_count_checks = false
+# Enable parameter count checks for overriding methods with renamed arguments.
+# This flag is temporary and will be removed once this behavior is enabled by
+# default.
+overriding_renamed_parameter_count_checks = false
+# Use the enum overlay for more precise enum checking. This flag is temporary
+# and will be removed once this behavior is enabled by default.
+use_enum_overlay = false
+# Variables initialized as None retain their None binding. This flag is
+# temporary and will be removed once this behavior is enabled by default.
+strict_none_binding = false
+# Support the third-party fiddle library. This flag is temporary and will be
+# removed once this behavior is enabled by default.
+use_fiddle_overlay = false
+# Opt-in: Do not allow Any as a return type.
+no_return_any = false
+# Experimental: Support pyglib's @cached.property.
+enable_cached_property = false
+# Experimental: Infer precise return types even for invalid function calls.
+precise_return = false
+# Experimental: Solve unknown types to label with structural types.
+protocols = false
+# Experimental: Only load submodules that are explicitly imported.
+strict_import = false
+# Experimental: Enable exhaustive checking of function parameter types.
+strict_parameter_checks = false
+# Experimental: Emit errors for comparisons between incompatible primitive
+# types.
+strict_primitive_comparisons = false
+# Don't report errors.
+report_errors = true

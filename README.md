@@ -20,7 +20,7 @@ Often, multiple single-threaded workers are used to handle queues of pipelines:
 
 [![Idea][idea-pic]]()
 
-The algorithm allows you to increase the amount of data processed by the handler at a time by grouping operations in the pipelines in such a way that the sequence of the pipelines is not broken.
+The algorithm allows you to increase the amount of data processed by the handler at a time by grouping operations in the pipelines in such a way that the order of the pipeline operations performing is not broken.
 
 [![Idea][idea-2-pic]]()
 

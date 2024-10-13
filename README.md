@@ -2,38 +2,63 @@
 <div align="center">
     <img src="images/ppao.png" alt="Logo" height="130">
 
-  <h3 align="center">Python Pipeline Algorithmic Optimizer</h3>
+  <h3 align="center">Pipeline Algorithmic Optimizer</h3>
 
   <p align="center">
-    Reduce repeated data handler calls by the operations grouping.
-
+    Group data to reduce overhead
   </p>
 </div>
 
 
-## Do I need the ppao?
-[![Use cases][use-cases-pic]]()
+## What problem does it solve?
+You might find this useful if you have pipelines that use bulk data processors such as:
+- NLP tools
+- Neural network models
+- Third-party APIs
+- etc.
 
-Even if you cache your heavy handlers in the NoSQL database, you can still reduce the number of queries to the database with ppao.
+And you want to reduce overhead, such as:
+- redundant initializations of handler classes
+- latency from redundant calls to third-party APIs
+- redundant bulk function calls
+
+
+
+## Benefits:
+For data processing:
+* You can optimize huge queues of pipelines by reducing the number of calls for certain operations.
+
+For serverless architecture:
+* Given the cold start problem, you can increase the amount of data that will be processed by the lambda function in a single call.
+
+For web services:
+* You can group the data sent to a third-party API, if that's more advantageous in your case.
+
+For microservices that process job queues:
+* You can aggregate the pipelines that can be optimized and skip the rest as it is.
+
+## Limitations:
+* Algorithm is only suitable for the bulk functions pipelines.
+* The maximum number of operations in the pipelines must be limited and all pipelines must be the same length. If there are fewer operations, zeros are placed in the empty space. You can also use the chain design pattern.
+* You should be ready to add the numpy dependency to your project.
+* Not all sets of pipelines may be suitable for using this algorithm. The Grouper is responsible for checking this. If a pipeline cannot be grouped with others, it will have to wait for new pipelines with which it can form a group to successfully solve the problem. You can control what is in the grouper and execute the pipelines yourself when you need to.
+
 ## What is the idea?
-Often, multiple single-threaded workers are used to handle queues of pipelines:
+The pipeline is a pattern used to process data or tasks in a series of sequential steps. Data passes through a series of handlers, where each step performs its specific function and passes the result to the next step.
+
+Note: The data in the pictures below should not be taken as an object but as a reference to it, because the data in the pipelines is usually transformed at each step.
 
 [![Idea][idea-pic]]()
 
-The algorithm allows you to increase the amount of data processed by the handler at a time by grouping operations in the pipelines in such a way that the order of the pipeline operations performing is not broken.
+This algorithm solves the problem of merging several pipelines into one by combining the same operations. The order of operations for each participating pipelines is not affected.
+
+Bulk functions in your pipelines that have the same arguments, except for the data passed for processing, are considered equivalent operations that can be merged into one.
 
 [![Idea][idea-2-pic]]()
 
-## Benefits:
-* You can significantly reduce the number of calls to data handlers or requests to the database to retrieve a cached handler.
-* You can group requests to a third-party API to send more data in a single transaction, if that's more advantageous in your case.
+An attentive eye will notice that in this illustration there are many equivalent operations in one pipeline, which is rarely the case in practice. This is a good notice, but actually the lack of identical operations in the pipline doesn't affect the efficiency of the algorithm. If there are too many colors, it will be harder to understand the illustrations, so don't pay too much attention to that.
 
-## Limitations:
-* Algorithm is only suitable for the architecture described in the pictures above.
-* The maximum number of operations in the pipelines must be limited and all pipelines must be the same length. If there are fewer operations, zeros are placed in the empty space.
-* You should be ready to add the numpy dependency to your project.
-* Not all pipelines may be suitable for using this algorithm. The "Grouper" is responsible for checking this. If a pipeline cannot be grouped with others, it will have to wait for new pipelines with which it can form a group to successfully solve the problem. If you don't want to wait, execute the pipeline without ppao. The decision is up to you.
-
+You may have noticed that there are significantly fewer operations. Magic? Nope. Next, I will explain how it works. I've hidden the description of each component under the clickable dropdown.
 
 ## Explanation of the algorithm.
 ### Components:
@@ -169,7 +194,6 @@ Contributions are welcome.
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-[use-cases-pic]: images/use_cases.png
 [idea-pic]: images/idea.png
 [idea-2-pic]: images/idea_2.png
 [solver-pic]: images/solver.png
